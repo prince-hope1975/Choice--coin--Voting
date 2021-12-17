@@ -18,8 +18,9 @@ hr{
 
 }
 .connect{
-    transition: all 400ms ease;
+    transition: all 100ms ease;
 }
-.connect:hover{
-    background: linear-gradient();
+.yes, .no{
+    cursor: pointer;
 }
+    

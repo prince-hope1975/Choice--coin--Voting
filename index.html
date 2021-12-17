@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="./tailwind.css" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./public/tailwind.css" />
+    <link rel="stylesheet" href="./public/style.css" />
  <script
         src="https://cdn.jsdelivr.net/npm/algosdk@1.13.0-beta.1/dist/browser/algosdk.min.js"
         integrity="sha384-w9fodN00YjvWxdNoiyT+W6CqaATkXlfid9tnzBlToDqZWepVWLjI5wO7jNL4+aNs"
         crossorigin="anonymous"
     ></script>
-<script src="script.js" defer></script>
+<script src="./public/script.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <!-- <script>
         const newServer    = "https://testnet-algorand.api.purestake.io/ps2";
@@ -62,25 +62,23 @@
             class="
             connect 
             font-bold
-            hover:bg-gradient-to-r 
+            bg-gradient-to-r 
              hover:from-purple-500
               hover:to-pink-500
+              transition-all
+              hover:text-white
               p-3
               rounded-full
               bg-white
               text-gray-900
               cursor-pointer
-              
             "
           >
             CONNECT WALLET
           </div>
         </div>
         <div class="issue flex max-w-sm text-xl m-auto bg-green-400 p-3 rounded-2xl ">
-          Issue Number: 
-          <!-- <div type="text" class="bg-transparent placeholder:text-gray-900">
-            #1
-          </div>  -->
+          Issue Number:
         </div>
         <div
           class="
@@ -108,6 +106,7 @@
           <p class="text-lg">Input Voting Amount:</p>
           <input
             type="number"
+            min="0" 
             class="rounded-2xl p-2 outline-none text-purple-700 amount"
           />
         </div>
@@ -147,16 +146,6 @@
         </div>
       </div>
     </section>
-   <!-- <h2>Demonstrate the use of the Algod v2 and Indexer APIs</h2>
-
-    <div>
-        <button onclick="getParams()">Get v2 Params</button>
-        <button onclick="getStatus()">Get v2 Status</button>
-        <button onclick="indexerAsset()">Indexer Asset</button>
-    </div>
-
-    <p>Example output</p>
-    <textarea id="examples" class="log"></textarea> -->
 </body>
   </body>
 </html>
