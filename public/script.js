@@ -46,18 +46,31 @@ const setUserChoice = (choice) => {
 };
 
 //*MAIN FUNCTIONS */
+// The link to the Algosigner documentation used => => 
+//https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md
 
 
+
+/** This function deals with the connection of our app to the AlgoSigner extension */
 const connectWalletToAlgoSigner = async () => {
+  // This code checks if the Algosigner sdk is present,
+  //If it is not present the function will return and the remaining code will not run
   if (!AlgoSigner) {
     return alert("Please install AlgoSigner Browser Extension");
   }
+
+  //Await is just tell the javascript code to wait till the code has executed
+  //That is wait until the user has connected to AlgoSigner
+  
   await AlgoSigner.connect().then((d) => {
     console.log(`connected ${d}`);
     connectBtn.textContent = "Connected";
   });
 };
 
+
+//This function is what deals with making, signing, and submitting
+// transactions to the Algorand blockchain
 const submitTxn = async (value) => {
   try {
     const algodServer = "https://testnet-algorand.api.purestake.io/ps2";
@@ -74,6 +87,7 @@ const submitTxn = async (value) => {
     let suggestedParams = await algodClient.getTransactionParams().do();
 
     // Use the JS SDK to build a Transaction
+
     const val = amount.value * 1000000
     let sdkTx = new algosdk.Transaction({
       to: mainAddress,
@@ -96,7 +110,6 @@ const submitTxn = async (value) => {
     });
     console.log(signedTxs);
 
-    // await algodClient.sendRawTransaction(signedTxn).do();
      await algodClient
       .pendingTransactionInformation(tx.txId)
       .do()
@@ -112,6 +125,13 @@ const submitTxn = async (value) => {
 };
 
 
+//we got the elements from the HTML DOM in lines  23 and 24
+// the elements "yes" and "no" were gotten
+//We put the elements in an array so we can loop/iterate through them with the "forEach" method
+//For each of the elements we added an event listener to them
+// we called the setUserChoice function from line 44 
+// we set the userChoice to the innerHTML of either the yes or no when it's clicked
+//That way the variable is always updating when the user clicks
 [yes, no].forEach((e) => {
   e.addEventListener("click", (e) => {
     setUserChoice(e.target.innerHTML);
@@ -129,10 +149,20 @@ else{
   no.classList.remove("text-gray-900");
 }  });
 });
+
+// We add an event listener to the connectBtn button gotten from line  19
+// when the button is clicked the connectWalletToAlgoSigner()  function is called 
+//When the function is called, the code inside it is executed
 connectBtn.addEventListener("click", async () => {
   await connectWalletToAlgoSigner();
 });
+
+//This calls an annonimous function when the submit button is clicked
+// it first checks if the user has selected either yes or no before moving on to execute the remianing code
+
 submitBtn.addEventListener("click", async () => {
+  // we wrap the code below in a try catch block 
+  // the reason we do this is to be able to catch errors later on
   try {
     if (!userChoice) {
       return alert("Please Select Either Yes Or  No");
@@ -145,6 +175,8 @@ submitBtn.addEventListener("click", async () => {
     const addr = await AlgoSigner.accounts({ ledger: "TestNet" });
     const val = addr[0];
     const { address } = val;
+
+    //This is wehere the submitTxn fucntion we declared in line 74 is executed
     await submitTxn(address);
   } catch (e) {
     console.log(e);
