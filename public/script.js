@@ -1,8 +1,21 @@
 // Get The AlgoSigner package from the Browser Window
+/*
+When the AlgoSigner broweser extensio is downloaded,
+the AlgoSigner library is injected into the browser window
+
+The Code Below just Helps us get the object that interacts with that library
+It is what helps us to interact with the Algorand BlockChain
+*/
 const { AlgoSigner } = window;
-let signedTxs;
+
 
 // declare variables
+let signedTxs; //This Variable is to be used to store the Signed transaction
+
+//What document.querySelector does here is help us pick the element with the specific class of ".connect"
+//NOTE: The period(".") at the beginning of the connect just tells javascript to target a class
+
+//The connectBtn is the button that we use to connect to the algorand network
 const connectBtn = document.querySelector(".connect");
 const submitBtn = document.querySelector(".submitBtn");
 const amount = document.querySelector(".amount");
@@ -17,15 +30,24 @@ const one_Address =
   "K6WPIOES2UGY5ZYRC3ZDATRTCUHXE2A54QQ72R3HIW7BT2G44VDCRPWDVQ";
 let mainAddress = "";
 
-//  Helper Functions
+
+//! HELPER FUNCTIONS
+
+//This sets the address the algo is going to be sent to.
+//THe fucntion will be called when the user either clicks on yes or no
 const setAddress = (add) => {
   mainAddress = add;
 };
+
+//This function will set the variable userChoice to either yes or no when it is clicked
+// The yes or no variable will be used to determin the addrress the algo will be sent to
 const setUserChoice = (choice) => {
   userChoice = choice;
 };
 
-//Main Functions
+//*MAIN FUNCTIONS */
+
+
 const connectWalletToAlgoSigner = async () => {
   if (!AlgoSigner) {
     return alert("Please install AlgoSigner Browser Extension");
@@ -52,10 +74,11 @@ const submitTxn = async (value) => {
     let suggestedParams = await algodClient.getTransactionParams().do();
 
     // Use the JS SDK to build a Transaction
+    const val = amount.value * 1000000
     let sdkTx = new algosdk.Transaction({
       to: mainAddress,
       from: value,
-      amount: +(amount.value * 100000),
+      amount: +val,
       ...suggestedParams,
     });
     let binaryTx = sdkTx.toByte();
@@ -91,14 +114,19 @@ const submitTxn = async (value) => {
 
 [yes, no].forEach((e) => {
   e.addEventListener("click", (e) => {
-    setUserChoice(e.target.textContent);
+    setUserChoice(e.target.innerHTML);
 if(userChoice =="YES"){
-  yes.classList.add(".green")
-  no.classList.remove("red")
+  yes.classList.add("bg-blue-500", "text-white");
+  no.classList.remove("bg-red-500")
+  no.classList.add("text-gray-900");
+
+  yes.classList.remove("text-gray-900")
 }
 else{
-    yes.classList.remove(".green");
-    no.classList.add("red");
+  no.classList.add("bg-red-500", "text-white");
+  yes.classList.remove("bg-blue-500");
+  yes.classList.add("text-gray-900")
+  no.classList.remove("text-gray-900");
 }  });
 });
 connectBtn.addEventListener("click", async () => {
